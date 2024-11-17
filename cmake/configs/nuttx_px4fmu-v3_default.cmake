@@ -38,7 +38,7 @@ set(config_module_list
 	drivers/px4flow
 	drivers/px4fmu
 	drivers/px4io
-	drivers/rgbled
+	# drivers/rgbled
 	drivers/stm32
 	drivers/stm32/adc
 	drivers/stm32/tone_alarm
