@@ -76,26 +76,42 @@ L3GD20::probe()
 	read_reg(ADDR_WHO_AM_I);
 
 	bool success = false;
-	uint8_t v = 0;
+	static uint8_t v = 0;
 
 	/* verify that the device is attached and functioning, accept
 	 * L3GD20, L3GD20H and L3G4200D */
-	if ((v = read_reg(ADDR_WHO_AM_I)) == WHO_I_AM) {
-		_orientation = SENSOR_BOARD_ROTATION_DEFAULT;
-		success = true;
+	// if ((v = read_reg(ADDR_WHO_AM_I)) == WHO_I_AM) {
+	// 	_orientation = SENSOR_BOARD_ROTATION_DEFAULT;
+	// 	success = true;
 
-	} else if ((v = read_reg(ADDR_WHO_AM_I)) == WHO_I_AM_H) {
-		_orientation = SENSOR_BOARD_ROTATION_180_DEG;
-		success = true;
+	// } else if ((v = read_reg(ADDR_WHO_AM_I)) == WHO_I_AM_H) {
+	// 	_orientation = SENSOR_BOARD_ROTATION_180_DEG;
+	// 	success = true;
 
-	} else if ((v = read_reg(ADDR_WHO_AM_I)) == WHO_I_AM_L3G4200D) {
-		/* Detect the L3G4200D used on AeroCore */
-		_is_l3g4200d = true;
-		_orientation = SENSOR_BOARD_ROTATION_DEFAULT;
-		success = true;
-	}
+	// } else if ((v = read_reg(ADDR_WHO_AM_I)) == WHO_I_AM_L3G4200D) {
+	// 	/* Detect the L3G4200D used on AeroCore */
+	// 	_is_l3g4200d = true;
+	// 	_orientation = SENSOR_BOARD_ROTATION_DEFAULT;
+	// 	success = true;
+	// }
+    static uint8_t A = WHO_I_AM;
+    static uint8_t B = WHO_I_AM_H;
+    static uint8_t C = WHO_I_AM_L3G4200D;
 
-	if (success) {
+    v = read_reg(ADDR_WHO_AM_I);
+    if (v == A) {
+        _orientation = SENSOR_BOARD_ROTATION_DEFAULT;
+        success = true;
+    } else if (v == B) {
+        _orientation = SENSOR_BOARD_ROTATION_180_DEG;
+        success = true;
+    } else if (v == C) {
+        _is_l3g4200d = true;
+        _orientation = SENSOR_BOARD_ROTATION_DEFAULT;
+        success = true;
+    }
+
+    if (success) {
 		_checked_values[0] = v;
 		return OK;
 	}

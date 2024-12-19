@@ -59,9 +59,10 @@
 
 /* register addresses */
 #define ADDR_WHO_AM_I			0x0F
-#define WHO_I_AM_H 				0xD7
-#define WHO_I_AM				0xD4
-#define WHO_I_AM_L3G4200D		0xD3	/* for L3G4200D */
+
+#define WHO_I_AM_H 			0xD7
+#define WHO_I_AM			0xD4
+#define WHO_I_AM_L3G4200D		0xD9	/* for L3G4200D */
 
 #define ADDR_CTRL_REG1			0x20
 #define REG1_RATE_LP_MASK			0xF0 /* Mask to guard partial register update */
