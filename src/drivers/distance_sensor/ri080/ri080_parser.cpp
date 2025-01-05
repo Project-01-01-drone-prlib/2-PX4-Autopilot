@@ -154,7 +154,7 @@ int ri080_parse(char c, char *parserbuf, unsigned *parserbuf_index, RI080_PARSE_
                 cksm += parserbuf[i];
             }
             if (cksm == c) {
-                *dist = parserbuf[distance_index_l] + parserbuf[distance_index_h] * 256;
+                *dist = (parserbuf[distance_index_l] + parserbuf[distance_index_h] * 256)/1000.0f;
 		ret = 0;
             }
             *state = RI080_PARSE_STATE::STATE1_HEAD;
