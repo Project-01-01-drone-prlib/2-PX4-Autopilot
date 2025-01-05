@@ -81,7 +81,7 @@ RI080::init()
 		// 0.3 is too close to minimum so chattering of invalid sensor decision
 		// is happening sometimes. this cause EKF to believe inconsistent range readings.
 		// So we set 0.4 as valid minimum.
-		_px4_rangefinder.set_min_distance(0.4f);
+		_px4_rangefinder.set_min_distance(0.05f);
 		_px4_rangefinder.set_max_distance(12.0f);
 		_px4_rangefinder.set_fov(math::radians(1.15f));
 
@@ -251,7 +251,7 @@ RI080::collect()
 	}
 
 	// publish most recent valid measurement from buffer
-	_px4_rangefinder.update(timestamp_sample, distance_m);
+	_px4_rangefinder.update(timestamp_sample, distance_m,100);
 
 	perf_end(_sample_perf);
 
