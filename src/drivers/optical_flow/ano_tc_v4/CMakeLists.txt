@@ -32,15 +32,14 @@
 ############################################################################
 
 px4_add_module(
-	MODULE drivers__optical_flow__paa3905
-	MAIN paa3905
+	MODULE drivers__optical_flow__ano_tc_v4
+	MAIN ano_tc_v4
 	COMPILE_FLAGS
 		#-DDEBUG_BUILD
 	SRCS
-		paa3905_main.cpp
-		PAA3905.cpp
-		PAA3905.hpp
-		PixArt_PAA3905_Registers.hpp
+		ano_tc_v4_main.cpp
+		ANO_TC_V4.cpp
+		ANO_TC_V4.hpp
 	DEPENDS
 		conversion
 		drivers__device

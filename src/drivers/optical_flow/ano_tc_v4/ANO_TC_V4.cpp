@@ -31,14 +31,14 @@
  *
  ****************************************************************************/
 
-#include "PAA3905.hpp"
+#include "ANO_TC_V4.hpp"
 
 static constexpr int16_t combine(uint8_t msb, uint8_t lsb)
 {
 	return (msb << 8u) | lsb;
 }
 
-PAA3905::PAA3905(const I2CSPIDriverConfig &config) :
+ANO_TC_V4::ANO_TC_V4(const I2CSPIDriverConfig &config) :
 	SPI(config),
 	I2CSPIDriver(config),
 	_drdy_gpio(config.drdy_gpio)
@@ -60,7 +60,7 @@ PAA3905::PAA3905(const I2CSPIDriverConfig &config) :
 	}
 }
 
-PAA3905::~PAA3905()
+ANO_TC_V4::~ANO_TC_V4()
 {
 	perf_free(_bad_register_perf);
 	perf_free(_bad_transfer_perf);
@@ -72,7 +72,7 @@ PAA3905::~PAA3905()
 	perf_free(_no_motion_interrupt_perf);
 }
 
-int PAA3905::init()
+int ANO_TC_V4::init()
 {
 	int ret = SPI::init();
 
@@ -84,7 +84,7 @@ int PAA3905::init()
 	return Reset() ? 0 : -1;
 }
 
-bool PAA3905::Reset()
+bool ANO_TC_V4::Reset()
 {
 	_state = STATE::RESET;
 	DataReadyInterruptDisable();
@@ -94,13 +94,13 @@ bool PAA3905::Reset()
 	return true;
 }
 
-void PAA3905::exit_and_cleanup()
+void ANO_TC_V4::exit_and_cleanup()
 {
 	DataReadyInterruptDisable();
 	I2CSPIDriverBase::exit_and_cleanup();
 }
 
-void PAA3905::print_status()
+void ANO_TC_V4::print_status()
 {
 	I2CSPIDriverBase::print_status();
 
@@ -114,7 +114,7 @@ void PAA3905::print_status()
 	perf_print_counter(_no_motion_interrupt_perf);
 }
 
-int PAA3905::probe()
+int ANO_TC_V4::probe()
 {
 	for (int retry = 0; retry < 3; retry++) {
 		const uint8_t Product_ID = RegisterRead(Register::Product_ID);
@@ -142,7 +142,7 @@ int PAA3905::probe()
 	return PX4_ERROR;
 }
 
-void PAA3905::RunImpl()
+void ANO_TC_V4::RunImpl()
 {
 	const hrt_abstime now = hrt_absolute_time();
 
@@ -448,7 +448,7 @@ void PAA3905::RunImpl()
 	}
 }
 
-bool PAA3905::Configure()
+bool ANO_TC_V4::Configure()
 {
 	ConfigureStandardDetectionSetting();
 	// ConfigureEnhancedDetectionMode();
@@ -460,7 +460,7 @@ bool PAA3905::Configure()
 	return true;
 }
 
-void PAA3905::ConfigureStandardDetectionSetting()
+void ANO_TC_V4::ConfigureStandardDetectionSetting()
 {
 	// Standard Detection Setting is recommended for general tracking operations. In this mode, the chip can detect
 	// when it is operating over striped, checkerboard, and glossy tile surfaces where tracking performance is
@@ -529,7 +529,7 @@ void PAA3905::ConfigureStandardDetectionSetting()
 	RegisterWrite(0x5B, 0xA0);
 }
 
-void PAA3905::ConfigureEnhancedDetectionMode()
+void ANO_TC_V4::ConfigureEnhancedDetectionMode()
 {
 	// Enhance Detection Setting relatively has better detection sensitivity, it is recommended where yaw motion
 	// detection is required, and also where more sensitive challenging surface detection is required. The recommended
@@ -599,7 +599,7 @@ void PAA3905::ConfigureEnhancedDetectionMode()
 	RegisterWrite(0x5B, 0xA0);
 }
 
-void PAA3905::ConfigureAutomaticModeSwitching()
+void ANO_TC_V4::ConfigureAutomaticModeSwitching()
 {
 	// Automatic switching between Mode 0, 1 and 2:
 	RegisterWrite(0x7F, 0x08);
@@ -612,7 +612,7 @@ void PAA3905::ConfigureAutomaticModeSwitching()
 	// RegisterWrite(0x7F, 0x00);
 }
 
-void PAA3905::EnableLed()
+void ANO_TC_V4::EnableLed()
 {
 	// Enable LED_N controls
 	RegisterWrite(0x7F, 0x14);
@@ -620,19 +620,19 @@ void PAA3905::EnableLed()
 	RegisterWrite(0x7F, 0x00);
 }
 
-int PAA3905::DataReadyInterruptCallback(int irq, void *context, void *arg)
+int ANO_TC_V4::DataReadyInterruptCallback(int irq, void *context, void *arg)
 {
-	static_cast<PAA3905 *>(arg)->DataReady();
+	static_cast<ANO_TC_V4 *>(arg)->DataReady();
 	return 0;
 }
 
-void PAA3905::DataReady()
+void ANO_TC_V4::DataReady()
 {
 	_drdy_timestamp_sample.store(hrt_absolute_time());
 	ScheduleNow();
 }
 
-bool PAA3905::DataReadyInterruptConfigure()
+bool ANO_TC_V4::DataReadyInterruptConfigure()
 {
 	if (_drdy_gpio == 0) {
 		return false;
@@ -642,7 +642,7 @@ bool PAA3905::DataReadyInterruptConfigure()
 	return (px4_arch_gpiosetevent(_drdy_gpio, false, true, false, &DataReadyInterruptCallback, this) == 0);
 }
 
-bool PAA3905::DataReadyInterruptDisable()
+bool ANO_TC_V4::DataReadyInterruptDisable()
 {
 	if (_drdy_gpio == 0) {
 		return false;
@@ -651,7 +651,7 @@ bool PAA3905::DataReadyInterruptDisable()
 	return (px4_arch_gpiosetevent(_drdy_gpio, false, false, false, nullptr, nullptr) == 0);
 }
 
-uint8_t PAA3905::RegisterRead(uint8_t reg)
+uint8_t ANO_TC_V4::RegisterRead(uint8_t reg)
 {
 	// tSWR SPI Time Between Write And Read Commands
 	const hrt_abstime elapsed_last_write = hrt_elapsed_time(&_last_write_time);
@@ -676,7 +676,7 @@ uint8_t PAA3905::RegisterRead(uint8_t reg)
 	return cmd[1];
 }
 
-void PAA3905::RegisterWrite(uint8_t reg, uint8_t data)
+void ANO_TC_V4::RegisterWrite(uint8_t reg, uint8_t data)
 {
 	// tSWW SPI Time Between Write Commands
 	const hrt_abstime elapsed_last_write = hrt_elapsed_time(&_last_write_time);

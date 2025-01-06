@@ -32,14 +32,12 @@
  ****************************************************************************/
 
 /**
- * @file PAA3905.hpp
+ * @file ANO_TC_V4.hpp
  *
- * Driver for the PAA3905E1-Q: Optical Motion Tracking Chip
+ * Driver for the ANO_TC_V4E1-Q: Optical Motion Tracking Chip
  */
 
 #pragma once
-
-#include "PixArt_PAA3905_Registers.hpp"
 
 #include <drivers/drv_hrt.h>
 #include <drivers/device/spi.h>
@@ -51,16 +49,15 @@
 #include <uORB/topics/sensor_optical_flow.h>
 
 using namespace time_literals;
-using namespace PixArt_PAA3905;
 
 #define DIR_WRITE(a) ((a) | Bit7)
 #define DIR_READ(a) ((a) & 0x7F)
 
-class PAA3905 : public device::SPI, public I2CSPIDriver<PAA3905>
+class ANO_TC_V4 : public device::SPI, public I2CSPIDriver<ANO_TC_V4>
 {
 public:
-	PAA3905(const I2CSPIDriverConfig &config);
-	virtual ~PAA3905();
+	ANO_TC_V4(const I2CSPIDriverConfig &config);
+	virtual ~ANO_TC_V4();
 
 	static void print_usage();
 
@@ -123,7 +120,7 @@ private:
 	uint32_t _scheduled_interval_us{SAMPLE_INTERVAL_MODE_0 / 2};
 	static constexpr uint32_t kBackupScheduleIntervalUs{200_ms};
 
-	Mode _mode{Mode::LowLight};
+	// Mode _mode{Mode::LowLight};
 
 	hrt_abstime _last_write_time{0};
 	hrt_abstime _last_read_time{0};

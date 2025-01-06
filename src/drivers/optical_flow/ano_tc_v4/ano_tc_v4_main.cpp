@@ -31,24 +31,24 @@
  *
  ****************************************************************************/
 
-#include "PAA3905.hpp"
+#include "ANO_TC_V4.hpp"
 
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
 
-void PAA3905::print_usage()
+void ANO_TC_V4::print_usage()
 {
-	PRINT_MODULE_USAGE_NAME("paa3905", "driver");
+	PRINT_MODULE_USAGE_NAME("ano_tc_v4", "driver");
 	PRINT_MODULE_USAGE_COMMAND("start");
 	PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(false, true);
 	PRINT_MODULE_USAGE_PARAM_INT('Y', 0, 0, 359, "custom yaw rotation (degrees)", true);
 	PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
 }
 
-extern "C" __EXPORT int paa3905_main(int argc, char *argv[])
+extern "C" __EXPORT int ano_tc_v4_main(int argc, char *argv[])
 {
 	int ch = 0;
-	using ThisDriver = PAA3905;
+	using ThisDriver = ANO_TC_V4;
 	BusCLIArguments cli{false, true};
 	cli.custom1 = -1;
 	cli.spi_mode = SPIDEV_MODE3;
@@ -69,7 +69,7 @@ extern "C" __EXPORT int paa3905_main(int argc, char *argv[])
 		return -1;
 	}
 
-	BusInstanceIterator iterator(MODULE_NAME, cli, DRV_FLOW_DEVTYPE_PAA3905);
+	BusInstanceIterator iterator(MODULE_NAME, cli, DRV_FLOW_DEVTYPE_ANO_TC_V4);
 
 	if (!strcmp(verb, "start")) {
 		return ThisDriver::module_start(cli, iterator);

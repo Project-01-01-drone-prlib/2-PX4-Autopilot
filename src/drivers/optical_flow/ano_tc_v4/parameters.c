@@ -32,11 +32,11 @@
  ****************************************************************************/
 
 /**
- * PAA3905 Optical Flow
+ * ANO_TC_V4 Optical Flow
  *
  * @reboot_required true
  *
  * @boolean
  * @group Sensors
  */
-PARAM_DEFINE_INT32(SENS_EN_PAA3905, 0);
+PARAM_DEFINE_INT32(SENS_EN_ANOTCV4, 0);

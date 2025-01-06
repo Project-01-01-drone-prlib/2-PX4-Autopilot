@@ -1,5 +1,5 @@
-menuconfig DRIVERS_OPTICAL_FLOW_PAA3905
-	bool "paa3905"
+menuconfig DRIVERS_OPTICAL_FLOW_ANO_TC_V4
+	bool "ano_tc_v4"
 	default n
 	---help---
-		Enable support for PixArt paa3905
+		Enable support for PixArt ano_tc_v4
