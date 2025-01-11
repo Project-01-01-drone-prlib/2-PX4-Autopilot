@@ -1,0 +1,5 @@
+menuconfig DRIVERS_OPTICAL_FLOW_ANOTCFLOWV4
+	bool "anotcflowv4"
+	default n
+	---help---
+		Enable support for anotcflowv4
