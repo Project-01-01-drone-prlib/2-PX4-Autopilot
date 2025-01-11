@@ -1,0 +1,5 @@
+menuconfig DRIVERS_DISTANCE_SENSOR_RI080
+	bool "RI080"
+	default n
+	---help---
+		Enable support for RI080

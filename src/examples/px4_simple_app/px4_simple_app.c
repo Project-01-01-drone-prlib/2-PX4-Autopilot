@@ -49,7 +49,7 @@
 #include <math.h>
 
 #include <uORB/uORB.h>
-#include <uORB/topics/vehicle_acceleration.h>
+#include <uORB/topics/distance_sensor.h>
 #include <uORB/topics/vehicle_attitude.h>
 
 __EXPORT int px4_simple_app_main(int argc, char *argv[]);
@@ -58,15 +58,15 @@ int px4_simple_app_main(int argc, char *argv[])
 {
 	PX4_INFO("Hello Sky!");
 
-	/* subscribe to vehicle_acceleration topic */
-	int sensor_sub_fd = orb_subscribe(ORB_ID(vehicle_acceleration));
+	/* subscribe to distance_sensor topic */
+	int sensor_sub_fd = orb_subscribe(ORB_ID(distance_sensor));
 	/* limit the update rate to 5 Hz */
 	orb_set_interval(sensor_sub_fd, 200);
 
 	/* advertise attitude topic */
-	struct vehicle_attitude_s att;
-	memset(&att, 0, sizeof(att));
-	orb_advert_t att_pub = orb_advertise(ORB_ID(vehicle_attitude), &att);
+	// struct vehicle_attitude_s att;
+	// memset(&att, 0, sizeof(att));
+	// orb_advert_t att_pub = orb_advertise(ORB_ID(vehicle_attitude), &att);
 
 	/* one could wait for multiple topics with this technique, just using one here */
 	px4_pollfd_struct_t fds[] = {
@@ -98,24 +98,32 @@ int px4_simple_app_main(int argc, char *argv[])
 
 		} else {
 
+			// if (fds[0].revents & POLLIN) {
+			// 	/* obtained data for the first file descriptor */
+			// 	struct vehicle_acceleration_s accel;
+			// 	/* copy sensors raw data into local buffer */
+			// 	orb_copy(ORB_ID(distance_sensor), sensor_sub_fd, &accel);
+			// 	PX4_INFO("Accelerometer:\t%8.4f\t%8.4f\t%8.4f",
+			// 		 (double)accel.xyz[0],
+			// 		 (double)accel.xyz[1],
+			// 		 (double)accel.xyz[2]);
+
+			// 	/* set att and publish this information for other apps
+			// 	 the following does not have any meaning, it's just an example
+			// 	*/
+			// 	att.q[0] = accel.xyz[0];
+			// 	att.q[1] = accel.xyz[1];
+			// 	att.q[2] = accel.xyz[2];
+
+			// 	orb_publish(ORB_ID(vehicle_attitude), att_pub, &att);
+			// }
+
 			if (fds[0].revents & POLLIN) {
 				/* obtained data for the first file descriptor */
-				struct vehicle_acceleration_s accel;
+				struct distance_sensor_s distance;
 				/* copy sensors raw data into local buffer */
-				orb_copy(ORB_ID(vehicle_acceleration), sensor_sub_fd, &accel);
-				PX4_INFO("Accelerometer:\t%8.4f\t%8.4f\t%8.4f",
-					 (double)accel.xyz[0],
-					 (double)accel.xyz[1],
-					 (double)accel.xyz[2]);
-
-				/* set att and publish this information for other apps
-				 the following does not have any meaning, it's just an example
-				*/
-				att.q[0] = accel.xyz[0];
-				att.q[1] = accel.xyz[1];
-				att.q[2] = accel.xyz[2];
-
-				orb_publish(ORB_ID(vehicle_attitude), att_pub, &att);
+				orb_copy(ORB_ID(distance_sensor), sensor_sub_fd, &distance);
+				PX4_INFO("current_distance:\t%4.1f", (double)distance.current_distance);
 			}
 
 			/* there could be more file descriptors here, in the form like:
