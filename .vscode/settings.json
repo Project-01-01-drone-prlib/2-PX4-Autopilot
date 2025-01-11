@@ -127,5 +127,9 @@
         "terminal.integrated.scrollback": 15000,
         "yaml.schemas": {
                 "${workspaceFolder}/validation/module_schema.yaml": "${workspaceFolder}/src/modules/*/module.yaml"
-        }
+        },
+	{
+		"C_Cpp.clang_format_fallbackStyle": "WebKit",
+		"C_Cpp.clang_format_style": "{BasedOnStyle: WebKit, TabWidth: 8, IndentWidth: 8, UseTab: Always, ColumnLimit: 120}"
+	}
 }

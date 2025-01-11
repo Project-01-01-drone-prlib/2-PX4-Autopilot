@@ -1,0 +1,7 @@
+module_name: ANOTC OPTICAL_FLOW_V4
+serial_config:
+    - command: anotcflowv4 start -d ${SERIAL_DEV}
+      port_config_param:
+        name: SENS_ANOTCFLOWV4
+        group: Sensors
+
