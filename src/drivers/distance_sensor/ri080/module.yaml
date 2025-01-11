@@ -1,0 +1,7 @@
+module_name: ruijie RI080 Rangefinder
+serial_config:
+    - command: ri080 start -d ${SERIAL_DEV}
+      port_config_param:
+        name: SENS_RI080_CFG
+        group: Sensors
+

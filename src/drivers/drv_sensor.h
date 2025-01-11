@@ -191,6 +191,7 @@
 #define DRV_DIST_DEVTYPE_SIM           0x9A
 #define DRV_DIST_DEVTYPE_SRF05         0x9B
 #define DRV_DIST_DEVTYPE_GY_US42       0x9C
+#define DRV_DIST_DEVTYPE_RI080         0x9D
 
 #define DRV_BAT_DEVTYPE_BATMON_SMBUS   0x9d
 #define DRV_GPIO_DEVTYPE_MCP23009      0x9F
